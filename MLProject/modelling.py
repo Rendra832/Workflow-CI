@@ -12,7 +12,7 @@ def main():
     # 2. Aktifkan autolog sebelum memulai training
     mlflow.autolog()
 
-    df = pd.read_csv("titanic_clean.csv")
+    df = pd.read_csv("MLProject/titanic_clean.csv")
 
     X = df.drop("Survived", axis=1)
     y = df["Survived"]
