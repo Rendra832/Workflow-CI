@@ -6,9 +6,14 @@ import mlflow
 import mlflow.sklearn
 
 def main():
+    # 1. Set nama eksperimen agar mudah dicari
+    mlflow.set_experiment("Titanic_Prediction")
     
-    # Load dataset
-    df = pd.read_csv("MLProject/titanic_clean.csv")
+    # 2. Aktifkan autolog sebelum memulai training
+    mlflow.autolog()
+
+    df = pd.read_csv("titanic_clean.csv")
+
     X = df.drop("Survived", axis=1)
     y = df["Survived"]
 
@@ -16,28 +21,16 @@ def main():
         X, y, test_size=0.2, random_state=42
     )
 
+    # 3. WAJIB: Gunakan start_run() agar data benar-benar tersimpan ke mlruns
     with mlflow.start_run():
-        # Buat dan train model
         model = LogisticRegression(max_iter=1000)
         model.fit(X_train, y_train)
 
-        # Prediksi dan hitung akurasi
         y_pred = model.predict(X_test)
         acc = accuracy_score(y_test, y_pred)
 
-        # Manual logging parameter dan metric
-        mlflow.log_param("max_iter", 1000)
-        mlflow.log_metric("accuracy", acc)
-
-        # Log model
-        mlflow.sklearn.log_model(model, "model")
-
-        # Log artefak tambahan (misal prediksi)
-        predictions = pd.DataFrame({"y_true": y_test, "y_pred": y_pred})
-        predictions.to_csv("predictions.csv", index=False)
-        mlflow.log_artifact("predictions.csv")
-
         print("Accuracy:", acc)
+        # Metrik tambahan akan otomatis dicatat oleh autolog()
 
 if __name__ == "__main__":
     main()
