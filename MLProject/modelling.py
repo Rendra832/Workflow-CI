@@ -6,8 +6,6 @@ import mlflow
 import mlflow.sklearn
 
 def main():
-    # Set MLflow ke DagsHub
-    mlflow.set_tracking_uri("https://dagshub.com/Rendra832/Project-Akhir")
     
     # Load dataset
     df = pd.read_csv("titanic_clean.csv")
