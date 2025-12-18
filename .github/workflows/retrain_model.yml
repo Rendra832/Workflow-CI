@@ -26,4 +26,4 @@ jobs:
           pip install mlflow 
 
       - name: Run model training
-        run: mlflow run MLProject --experiment-name "Titanic_Prediction"
+        run: mlflow run MLProject --experiment-name "Titanic_Prediction" --env-manager local
