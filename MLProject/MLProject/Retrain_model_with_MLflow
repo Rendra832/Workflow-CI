@@ -1,29 +1,7 @@
-name: Retrain Model with MLflow
+name: Titanic_Prediction
 
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+conda_env: conda.yml
 
-jobs:
-  retrain-model:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.10
-
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install mlflow pandas scikit-learn -r requirements.txt
-
-      - name: Run MLflow Project
-        run: |
-          mlflow run MLProject --env-manager=local
+entry_points:
+  main:
+    command: "python modelling.py"
