@@ -8,7 +8,9 @@ import mlflow.sklearn
 
 
 def main():
-    # CSV langsung, karena working directory = MLProject
+    # MLflow Projects SUDAH buat run
+    mlflow.autolog()
+
     df = pd.read_csv("titanic_clean.csv")
 
     X = df.drop("Survived", axis=1)
@@ -18,17 +20,13 @@ def main():
         X, y, test_size=0.2, random_state=42
     )
 
-    # SATU run saja
-    with mlflow.start_run():
-        mlflow.autolog()
+    model = LogisticRegression(max_iter=1000)
+    model.fit(X_train, y_train)
 
-        model = LogisticRegression(max_iter=1000)
-        model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    acc = accuracy_score(y_test, y_pred)
 
-        y_pred = model.predict(X_test)
-        acc = accuracy_score(y_test, y_pred)
-
-        print("Accuracy:", acc)
+    print("Accuracy:", acc)
 
 
 if __name__ == "__main__":
