@@ -1,16 +1,14 @@
 name: Retrain Model
-
 on:
   push:
     branches:
       - main
   schedule:
-    - cron: '0 0 * * *'  # retrain setiap hari jam 00:00 UTC
+    - cron: '0 0 * * *'
 
 jobs:
   retrain:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -22,8 +20,10 @@ jobs:
 
       - name: Install dependencies
         run: |
+          # Pastikan path ini sesuai dengan folder utama proyek Anda
           pip install -r MLProject/requirements.txt
-          pip install mlflow 
+          pip install mlflow
 
       - name: Run model training
+        # Perintah ini akan mencari file bernama 'MLProject' di dalam folder 'MLProject'
         run: mlflow run MLProject --experiment-name "Titanic_Prediction" --env-manager local
